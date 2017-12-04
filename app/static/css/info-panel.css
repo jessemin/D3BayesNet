@@ -1,0 +1,94 @@
+#info-panel-title {
+  z-index: 1000;
+  overflow-y: auto;
+  background: #000;
+  display: block;
+  text-decoration: none;
+  color: #FFFFFF;
+  margin-bottom: 1%;
+}
+
+#info-panel {
+  z-index: 1000;
+  overflow-y: auto;
+  background: #000;
+  display: block;
+  text-decoration: none;
+  color: #FFFFFF;
+  margin-bottom: 1%;
+  height: 100%;
+}
+
+h2, h3, h4, h5, h6{
+  margin-left: 2%;
+}
+
+#info-panel-table table{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+
+.overlay {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
+td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    color: black;
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
+tr:nth-child(odd){background-color: #ffffff;}
+
+tr:hover {background-color: #ddd;}
+
+caption {
+  color:white;
+}
+
+#spinner {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+
+#tabletitle {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}

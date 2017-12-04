@@ -1,0 +1,161 @@
+<html>
+  <head>
+    <title>CS448B: Bayes Net for Non-domain Experts - Jesik Min</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/semantic.min.css') }}">
+      <!-- Custom styles for left menu sidebar -->
+      <link href="{{ url_for('static',filename='css/simple-sidebar.css') }}"  rel="stylesheet">
+
+      <!-- Custom styles for right info panel -->
+      <link href= "{{ url_for('static',filename='css/info-panel.css') }}" rel="stylesheet">
+
+      <!-- jQuery first, then Popper.js, then Bootstrap JS, then D3 -->
+      <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+
+      <script type="text/javascript" src= "{{ url_for('static',filename='js/semantic.min.js') }}"></script>
+      <!-- suggest script -->
+      <script>
+        function getConnectivity() {
+          var connectivities = {};
+          d3.selectAll("line").each(function() {
+            var start = d3.select(this).attr('pie1');
+            var end = d3.select(this).attr('pie2');
+            if (!('"'+start+'"' in connectivities)) {
+              connectivities['"'+start+'"'] = ['"'+end+'"'];
+            } else {
+              connectivities['"'+start+'"'].push('"'+end+'"');
+            }
+          });
+          return connectivities;
+        }
+        function suggest() {
+          var connectivities = getConnectivity();
+          var answer = {};
+          var lines = {{ lines|tojson }};
+          for (var i = 0; i < lines.length; i++) {
+            var elements= lines[i].split(",");
+            var start = elements[0].trim();
+            var end = elements[1].trim();
+            if (!(start in answer)) {
+              answer[start] = [end];
+            } else {
+              answer[start].push(end);
+            }
+          }
+          var result = ["good"];
+          for (var key in answer) {
+            if (!(key in connectivities)) {
+              result = [key, answer[key][0], "add"];
+              break;
+            }
+            var answerValues = new Set(answer[key]);
+            var connectionValues = new Set(connectivities[key]);
+            var difference = new Set([...answerValues].filter(x => !connectionValues.has(x)));
+            if (difference.size > 0) {
+              result = [key, difference.values().next().value, "add"];
+              break;
+            }
+            var difference2 = new Set([...connectionValues].filter(x => !answerValues.has(x)));
+            if (difference2.size > 0) {
+              result = [key, difference2.values().next().value, "remove"];
+              break;
+            }
+          }
+          alert(result);
+        }
+      </script>
+  </head>
+
+  <body>
+
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="/index">
+                        Menu
+                    </a>
+                </li>
+                <li>
+                    <a href="/about">About</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+              <div class="row">
+                <h1>D3 BayesNet</h1>
+                <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
+                <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
+                <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Toggle Menu</a>
+              </div>
+              <hr>
+            </div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col">
+
+                  <svg>
+                    <defs>
+                      <marker id="arrow" markerWidth="10" markerHeight="7"
+                      refX="0" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" />
+                      </marker>
+                    </defs>
+                  </svg>
+                </div>
+                <div class="col">
+                  <div class="row" id="info-panel-title">
+                    <h2>Info Panel</h2>
+                  </div>
+                  <div class="row" id="info-panel">
+                    Target Variables:<br>
+                    <input type="text" name="target_variables" id="target_variables"><br>
+                    Dependent Variables:<br>
+                    <input type="text" name="dependent_variables" id="dependent_variables">
+                    <a href="#" title="Dismissible popover" data-toggle="popover" data-trigger="focus" data-content="Click anywhere in the document to close this popover">Help?</a>
+                    <button onclick="on()">Show Conditional Probabilities</button>
+                    <button onclick="add_edge()">Add Edge</button>
+                    <button onclick="remove_edge()">Remove Edge</button>
+                    <button onclick="deselect_all()">Deselect All</button>
+                    <button id="suggestButton" onclick="suggest()">Suggest</button>
+                    <div id="two_info_panel_table"></div>
+                    <div id="info-panel-table" class="overlay"><p id="tabletitle">Conditional Probability Table</p></div>
+                  </div>
+                </div>
+              </div>
+            <div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+
+    <!-- popover -->
+    <script>
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+    });
+    </script>
+    <!-- Menu Toggle Script -->
+    <script>
+      $("#menu-toggle").click(function(e) {
+          e.preventDefault();
+          $("#wrapper").toggleClass("toggled");
+      });
+    </script>
+
+    <!-- D3 Script -->
+    <script type="text/javascript" src= "{{ url_for('static',filename='js/custom_d3.js') }}"></script>
+  </body>
+</html>
