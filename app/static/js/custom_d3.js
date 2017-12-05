@@ -242,6 +242,7 @@ function tabulateSingle(columnName) {
     $table.append(row);
     $('#prob_title').text(caption_str.substring("<caption align='top'>".length, caption_str.length-'</caption>'.length)).css('display', 'block');
     $('#two_info_panel_table').append($table);
+  });
   return;
 }
 
