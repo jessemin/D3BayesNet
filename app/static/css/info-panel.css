@@ -92,3 +92,15 @@ caption {
   transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
 }
+
+#two_info_panel_table td {
+  padding: 5;
+}
+
+.modal-dialog {
+  position: absolute;
+  top: 45%;
+  right: 20%;
+  bottom: 20%;
+  left: 30%;
+}

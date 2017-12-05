@@ -19,6 +19,8 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
       <script src="https://d3js.org/d3.v4.min.js"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+      <script src="https://use.fontawesome.com/f976e61e24.js"></script>
   </head>
 
   <body>
@@ -28,7 +30,7 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="/index">
+                    <a href="#">
                         Menu
                     </a>
                 </li>
@@ -41,8 +43,113 @@
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
-          Hello
-          <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Toggle Menu</a>
+          <div class="container-fluid">
+            <div style="margin-left: 2%; margin-right:2%; margin_top:2%;">
+              <div class="row">
+                <div class="col-lg card card-inverse" style="background-color: #333; border-color: #333; color: #ffffff; max-width: 100%">
+                  <div class="card-body">
+                    <span class="card-title"style="float: left;width: 10%;">
+                        <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true" style=" font-size: 150%;"></i></a>
+                    </span>
+                    <span class="card-title"style="float: left; width: 80%; text-align: center; margin: auto;">
+                      <a href="/" style="color: #ffffff;" >
+                        <h1 style="font-size: 300%; margin-bottom: 1.5%;">Project: D3 BayesNet</h1>
+                      </a>
+                    </span>
+                    <span class="card-title"style="float: right; width: 10%; text-align:right;">
+                        <a href="/"><i class="fa fa-home" aria-hidden="true" style="font-size: 250%;"></i></a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+          <div class="row" style="margin-left: 2%; margin-right:2%; margin_top:2%; text-align: center;">
+            <div class="card-body">
+              <h3>Interactive Bayesian Network Visualization with D3 for Non-domain experts</h3>
+            </div>
+          </div>
+          <div class="row" style="margin-left: 2%; margin-right:2%; margin_top:2%;">
+            <div class="col card-body">
+              <p>
+                This is the final project of <a href="https://cs448b.stanford.edu">CS448B: Data Visualization</a>, a Stanford CS course on data visualization techniques (Fall 2017).
+                With flood of data these days, Bayesian network is widely used to deduce causal relationships from massive data.
+                Because Bayesian network is a complete model for variables and their relationships, people use it to answer probabilistic queries and make predictions.
+                There are three major reasons why Bayesian network is powerful:
+                <ul>
+                  <li>Bayesian network is graphical models.</li>
+                  <li>Bayesian network captures causal relationship between factors.</li>
+                  <li>Bayesian network handles uncertainty.</li>
+                </ul>
+                Most importantly, Bayesian network can be improved by combining domain knowledge with data.
+              </p>
+              <p>
+                While there is various software designed to help people create and design a Bayesian network, only few software helps people explore possible networks by incorporating domain expertise.
+                Even worse, up to my knowledge, there is no D3 application that facilitates interactive Bayesian network design (most of them are either standalone software written in Java or MVC).
+                To address this problem, I built an interactive Bayesian network application in D3 for my final project.
+              </p>
+            </div>
+          </div>
+            <div class="row" style="margin-left: 2%; margin-right:2%; margin_top:2%;">
+              <div class="col">
+              <div class="card card-inverse card-warning" style="border-color: #333; color: #ffffff;">
+                <h3>Problem</h3>
+                <div class="card-block">
+                  <h4>People without domain knowledge should also be able to construct a reasonable Bayesian network.</h4>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card card-inverse card-success" style="border-color: #333; color: #ffffff;">
+                <h3>Solution</h3>
+                <div class="card-block">
+                  <h4>Implement a D3 application that helps non-domain experts construct and visualize Bayesian networks.</h4>
+                </div>
+              </div>
+            </div>
+            </div>
+            <div class="row card card-inverse card-primary" style="border-color: #333;margin-left: 2%; margin-right:2%; margin_top:2%; color: #ffffff; max-width: 100%;">
+              <div class="card-block">
+                <div class="card-title">
+                  <h3>Key Features</h3>
+                </div>
+                <div class="card-body">
+                  <ol>
+                    <h4><li>Visualize each node as pie chart of event space.</li></h4>
+                    <h4><li>Automatically populates probability distribution table of a single variable.</li></h4>
+                    <h4><li>Suggest next action that will likely improve the network.</li></h4>
+                    <h4><li>Show conditional probability distribution of multiple variables.</li></h4>
+                    <h4><li>Interactive and lightweight web-based.</li></h4>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-left: 2%; margin-right:2%; margin_top:2%;">
+              <h3>Code</h3>
+            </div>
+            <div class="row" style="margin-left: 2%; margin-right:2%; margin_top:2%;">
+              <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="https://github.com/jessemin/D3BayesNet">
+                  <i class="fa fa-github" aria-hidden="true" style="font-size: 300%;"></i>
+                </a>
+              </p>
+            </div>
+            <div class="row" style="margin-left: 2%; margin-right:2%; margin_top:2%;">
+              <h3>Contact</h3>
+            </div>
+            <div class="row" style="margin-left: 2%; margin-right:2%; margin_top:2%;">
+              <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="https://www.linkedin.com/in/jesikmin/">
+                  <i class="fa fa-linkedin-square" aria-hidden="true" style="font-size: 300%"></i>
+                </a>
+              </p>
+            </div>
+            <div class="row" style="margin-left: 2%; margin-right:2%; margin_top:2%;">
+              <p>
+                I sincerely thank for <a href="http://graphics.stanford.edu/~maneesh/">&nbsp;Professor Maneesh Agrawala&nbsp;</a> and entire course staff for teaching and support throughout the quarter.
+              </p>
+            </div>
+          </div>
         </div>
         <!-- /#page-content-wrapper -->
     </div>

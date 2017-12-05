@@ -121,6 +121,7 @@ function drawPieNode(columnName, index) {
     .style('opacity',0.8)
     .on('click', function(){
       if (selected_edge_1.length == 0) {
+        tabulateSingle(columnName);
         selected_edge_1.push('.arc_'+columnName);
         d3.selectAll('.arc_'+columnName).style('stroke', 'red')
         .style('stroke-width', 3.3);
@@ -203,6 +204,45 @@ function addLine(columnName1, columnName2) {
     .attr("x2", pos2[0])
     .attr("y2", pos2[1])
     .attr("marker-end", "url(#arrow)");
+}
+
+function tabulateSingle(columnName) {
+  if ($('#info-panel-table > table').length) {
+    $('#info-panel-table > table').remove();
+  }
+  d3.csv("static/data/small.csv", function(error, data) {
+    if (error) {
+      // Handle error if there is any
+      return console.warn(error);
+    }
+
+    var stats = global_statistics[columnName];
+    var keys = Object.keys(stats);
+    var total_sum = 0;
+    keys.forEach(function(key){
+      total_sum += stats[key];
+    });
+    var $table = $('<table/>');
+    var caption_str = "<caption align='top'>";
+    caption_str += "Probability Distribution of " + columnName;
+    caption_str += "</caption>";
+    var first_row = "<tr><th></th>";
+    keys.forEach(function(column){
+      first_row += "<th>";
+      first_row += columnName.substring(0, 5) + "=" + column;
+      first_row += "</th>";
+    });
+    first_row += "</tr>"
+    $table.append(first_row);
+    var row = "<tr><td></td>";
+    keys.forEach(function(column){
+      row+="<td>"+Number(Math.round(stats[column] * 1.0 / total_sum+'e2')+'e-2')+"</td>";
+    });
+    row+="</tr>";
+    $table.append(row);
+    $('#prob_title').text(caption_str.substring("<caption align='top'>".length, caption_str.length-'</caption>'.length)).css('display', 'block');
+    $('#two_info_panel_table').append($table);
+  return;
 }
 
 // The table generation function
@@ -331,7 +371,9 @@ function tabulate(target_vars, dep_vars, specific) {
       }
     }
     caption_str += "</caption>";
-    $table.append(caption_str)
+    if(specific) {
+      $table.append(caption_str);
+    }
     var first_row = "<tr><th></th>";
     target_permutation.forEach(function(column){
       first_row += "<th>";
@@ -369,6 +411,7 @@ function tabulate(target_vars, dep_vars, specific) {
       $('#info-panel-table').click(off);
       return;
     }
+    $('#prob_title').text(caption_str.substring("<caption align='top'>".length, caption_str.length-'</caption>'.length)).css('display', 'block');
     $('#two_info_panel_table').append($table);
     return;
   });
@@ -383,13 +426,16 @@ function add_edge() {
     .style('stroke-width', 0);
     selected_edge_1 = [];
     selected_edge_2 = [];
+    deselect_all();
     return;
   }
   if (selected_edge_1.length == 0) {
+  deselect_all();
     alert("Please click the node where edge starts.");
     return;
   }
   if (selected_edge_2.length == 0) {
+  deselect_all();
     alert("Please click the node where edge ends.");
     return;
   }
@@ -404,13 +450,16 @@ function remove_edge() {
     .style('stroke-width', 0);
     selected_edge_1 = [];
     selected_edge_2 = [];
+    deselect_all();
     return;
   }
   if (selected_edge_1.length == 0) {
+    deselect_all();
     alert("Please click the node where edge you want to remove starts.");
     return;
   }
   if (selected_edge_2.length == 0) {
+    deselect_all();
     alert("Please click the node where edge you want to remove ends.");
     return;
   }
@@ -418,6 +467,7 @@ function remove_edge() {
 
 function deselect_all() {
     if ($('#two_info_panel_table > table').length) {
+      $('#two_info_panel_table > h5').css('display', 'none');
       $('#two_info_panel_table > table').remove();
     }
   if (selected_edge_1.length > 0) {
@@ -438,7 +488,7 @@ function on() {
   var dependent_variables = $('#dependent_variables').val();
   $('#dependent_variables').val('');
   if (target_variables.length == 0 || dependent_variables.length == 0) {
-    alert("Invalid input values.");
+    alert("Invalid input values. Please read help if you are confused.");
     return;
   }
   var tv = [];

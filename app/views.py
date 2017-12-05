@@ -10,6 +10,8 @@ FIRST = True
 
 def gphHelper():
     inputfilename, outputfilename = os.path.join(APP_STATIC, "data/small.csv"), os.path.join(APP_STATIC, "data/small.gph")
+    if os.path.isfile(outputfilename):
+        return
     original_dag, n, r, D, idx2names = bayesian.initialize(inputfilename, outputfilename)
 
     bayesian.run_k2(original_dag, n, r, D, 30)

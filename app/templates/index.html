@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
       <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/semantic.min.css') }}">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
       <!-- Custom styles for left menu sidebar -->
       <link href="{{ url_for('static',filename='css/simple-sidebar.css') }}"  rel="stylesheet">
 
@@ -50,28 +52,34 @@
               answer[start].push(end);
             }
           }
-          var result = ["good"];
+          var result = ["Looks good!"];
           for (var key in answer) {
             if (!(key in connectivities)) {
-              result = [key, answer[key][0], "add"];
+              result = [key, answer[key][0], "Add"];
               break;
             }
             var answerValues = new Set(answer[key]);
             var connectionValues = new Set(connectivities[key]);
             var difference = new Set([...answerValues].filter(x => !connectionValues.has(x)));
             if (difference.size > 0) {
-              result = [key, difference.values().next().value, "add"];
+              result = [key, difference.values().next().value, "Add"];
               break;
             }
             var difference2 = new Set([...connectionValues].filter(x => !answerValues.has(x)));
             if (difference2.size > 0) {
-              result = [key, difference2.values().next().value, "remove"];
+              result = [key, difference2.values().next().value, "Remove"];
               break;
             }
           }
-          alert(result);
+          if (result.length == 3){
+            $('#myModal .modal-body').text(result[2]+ " edge between " + result[0] + " and " + result[1]);
+          } else{
+            $('#myModal .modal-body').text(result[0]);
+          }
+          $('#myModal').modal('show');
         }
       </script>
+      <script src="https://use.fontawesome.com/f976e61e24.js"></script>
   </head>
 
   <body>
@@ -81,7 +89,7 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="/index">
+                    <a href="#">
                         Menu
                     </a>
                 </li>
@@ -95,18 +103,39 @@
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
-              <div class="row">
-                <h1>D3 BayesNet</h1>
-                <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-                <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-                <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Toggle Menu</a>
+              <div style="margin-left: 2%; margin-right:2%; margin_top:2%;">
+                <div class="row">
+                  <div class="col-lg card card-inverse" style="background-color: #333; border-color: #333; color: #ffffff; max-width: 100%">
+                    <div class="card-body">
+                      <span class="card-title"style="float: left;width: 10%;">
+                          <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true" style=" font-size: 150%;"></i></a>
+                      </span>
+                      <span class="card-title"style="float: left; width: 80%; text-align: center; margin: auto;">
+                        <a href="/" style="color: #ffffff;" >
+                          <h1 style="font-size: 300%; margin-bottom: 1.5%;">Project: D3 BayesNet</h1>
+                        </a>
+                      </span>
+                      <span class="card-title"style="float: right; width: 10%; text-align:right;">
+                          <a href="/about" class="btn"><i class="fa fa-question-circle" aria-hidden="true" style='font-size: 250%;'></i></a>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row"  >
+                  <div class="col card card-inverse" style="background-color: #333; border-color: #333; color: #ffffff;">
+                    <div class="card-body">
+                      <p>This is a lightweight application for visualizing Bayesian network powered by D3.</p>
+                      <p>Not an expert to the dataset you have? Don't worry. <strong>D3 BayesNet</strong> will guide your way!</p>
+                    </div>
+                  </div>
+                </div>
               </div>
               <hr>
             </div>
+
             <div class="container-fluid">
               <div class="row">
                 <div class="col">
-
                   <svg>
                     <defs>
                       <marker id="arrow" markerWidth="10" markerHeight="7"
@@ -116,22 +145,59 @@
                     </defs>
                   </svg>
                 </div>
-                <div class="col">
-                  <div class="row" id="info-panel-title">
+                <div class="col" style="height: 65%;">
+                  <div class="row card-body" id="info-panel-title">
                     <h2>Info Panel</h2>
                   </div>
                   <div class="row" id="info-panel">
-                    Target Variables:<br>
-                    <input type="text" name="target_variables" id="target_variables"><br>
-                    Dependent Variables:<br>
-                    <input type="text" name="dependent_variables" id="dependent_variables">
-                    <a href="#" title="Dismissible popover" data-toggle="popover" data-trigger="focus" data-content="Click anywhere in the document to close this popover">Help?</a>
-                    <button onclick="on()">Show Conditional Probabilities</button>
-                    <button onclick="add_edge()">Add Edge</button>
-                    <button onclick="remove_edge()">Remove Edge</button>
-                    <button onclick="deselect_all()">Deselect All</button>
-                    <button id="suggestButton" onclick="suggest()">Suggest</button>
-                    <div id="two_info_panel_table"></div>
+                    <div style="margin: 5%; text-align:left;">
+                      <button onclick="add_edge()"type="button" class="btn btn-primary">Add Edge</button>
+                      <button onclick="remove_edge()"type="button" class="btn btn-primary">Remove Edge</button>
+                      <button onclick="deselect_all()"type="button" class="btn btn-primary">Deselect All</button>
+                    </div>
+                    <hr style="border-top: 1px solid #ffffff">
+                    <div style="margin: 5%; text-align:left;">
+                      <button id="suggestButton" onclick="suggest()"type="button" class="btn btn-primary">Smart Suggest</button>
+                    </div>
+                    <hr style="border-top: 1px solid #ffffff">
+                    <div style="margin: 5%; text-align:left;">
+                      <div>
+                      Target Variables:<br>
+                      <input type="text" name="target_variables" id="target_variables" style="color: black"><br>
+                      Dependent Variables:<br>
+                      <input type="text" name="dependent_variables" id="dependent_variables" style="color: black">
+                      <a href="#" title="What should I enter?" data-toggle="popover"
+                        data-trigger="focus" data-content="Enter variable names separated by comma. For instace,
+                        if you want to see conditional probability distribution of age given fare and sex, type
+                        'age' in 'Target Variables' and 'fare,sex' in 'Dependent Variables' (without quote).">
+                        <i class="fa fa-question-circle" aria-hidden="true" style='font-size: 150%;'></i>
+                      </a>
+                      </div>
+                      <br>
+                      <button onclick="on()" type="button" class="btn btn-primary">Show Conditional Probabilities</button>
+                      <div class="modal" tabindex="-1" role="dialog" id="myModal">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Smart Suggestion</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p></p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr style="border-top: 1px solid #ffffff">
+                    <div style="margin: 5%; text-align:left;">
+                      <div id="two_info_panel_table">
+                        <h5 style="display: none;" id="prob_title"></h5>
+                      </div>
+                    </div>
                     <div id="info-panel-table" class="overlay"><p id="tabletitle">Conditional Probability Table</p></div>
                   </div>
                 </div>
