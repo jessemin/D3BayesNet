@@ -131,7 +131,7 @@ function drawPieNode(columnName, index) {
             return;
           }
           selected_edge_2.push('.arc_'+columnName);
-          tabulate([selected_edge_1[0].substring(5)], [selected_edge_2[0].substring(5)], false);
+          tabulate([selected_edge_2[0].substring(5)], [selected_edge_1[0].substring(5)], false);
           d3.selectAll('.arc_'+columnName).style('stroke', 'blue')
           .style('stroke-width', 3.3);
         } else {
@@ -150,7 +150,7 @@ function drawPieNode(columnName, index) {
           selected_edge_2[0] = ('.arc_'+columnName);
           d3.selectAll('.arc_'+columnName).style('stroke', 'blue')
           .style('stroke-width', 3.3);
-          tabulate([selected_edge_1[0].substring(5)], [selected_edge_2[0].substring(5)], false);
+          tabulate([selected_edge_2[0].substring(5)], [selected_edge_1[0].substring(5)], false);
         }
       }
     })
