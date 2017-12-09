@@ -3,6 +3,7 @@
 ![Alt text](readme.png?raw=true "README.png")
 
 Note0: The app optimally runs with 15-inch screen on Chrome.
+
 Note1: This is flask web app mainly run by Javascript and Python. After installing dependencies, simply run:
 ```
 python run.py
